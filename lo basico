@@ -1,0 +1,208 @@
+#include "stdafx.h"
+#include <iostream>
+#include <stdio.h>
+#include <conio.h>
+#include <stdlib.h>
+#include <string>
+#include <iomanip>
+#define N 40
+using namespace std;
+using namespace System;
+struct usuario{
+	int idusuario;
+	string nombre;
+	string contrasena;
+	string ce;
+	string estado;
+};
+struct cliente_tractor {
+	int idusuario;
+	int id_tractor;
+	int modelo_tractor;
+	string estado;
+};
+struct rev_revisado {
+	int idrevreisado;
+	int hrs_trabajadas;
+	int revision;
+	int operacion;
+	string detalle;
+	int hrs_faltantes;
+	int estado;
+};
+struct encargado_tractor {
+	int idusuario;
+	string marca;
+	int modelo_tractor;
+	int num_rev;
+	string estado;
+};
+struct detalle_revision {
+	int id_detalle;
+	int modelo_tractor;
+	int revision;
+	int operacion;
+	int detalle;
+	int hora;
+};
+int main(array<System::String ^> ^args)
+{
+    Console::WriteLine(L"Hello World");
+    return 0;
+}
+void addusuario(){
+	FILE *ptr;
+	usuario reg;
+	string a;
+	cout << endl << "Ingresar un Id de Usuario: ";
+	cin >> reg.idusuario;
+	cout << endl << "Ingrese el nombre de usuario: ";
+	getline(cin, reg.nombre);
+	cout << endl << "Ingrese la contraseña: ";
+	getline(cin,reg.contrasena);
+	cout << endl << "C / E ?: ";
+	getline(cin,reg.ce);
+	reg.estado = 'N';
+	ptr = fopen("Usuarios.dat","ab");
+	fwrite(&reg, sizeof(reg), 1, ptr);
+	fclose(ptr);
+}
+void addcliente_tractor(){
+	FILE *ptr;
+	cliente_tractor reg;
+	cout << endl << "Ingresar un Id de Usuario: ";
+	cin >> reg.idusuario;
+	cout << endl << "Ingrese el idTractor: ";
+	cin >> reg.id_tractor;
+	cout << endl << "Ingrese el modelo tractor: ";
+	cin >> reg.modelo_tractor;
+	reg.estado = 'N';
+	ptr = fopen("Cliente_tractor.dat","ab");
+	fwrite(&reg, sizeof(reg), 1, ptr);
+	fclose(ptr);
+}
+void addencargado_tractor(){
+	FILE *ptr;
+	encargado_tractor reg;
+	cout << endl << "Ingresar un Id de Usuario: ";
+	cin >> reg.idusuario;
+	cout << endl << "Ingrese la marca: ";
+	getline(cin,reg.marca);
+	cout << endl << "Ingrese el modelo tractor: ";
+	cin >> reg.modelo_tractor;
+	cout << endl << "Ingrese numero de revisiones: ";
+	cin >> reg.num_rev;
+	reg.estado = 'N';
+	ptr = fopen("Encargado_tractor.dat","ab");
+	fwrite(&reg, sizeof(reg), 1, ptr);
+	fclose(ptr);
+}
+void adddetalle_revision(){
+	FILE *ptr;
+	detalle_revision reg;
+	cout << endl << "Ingresar un Id de detalle: ";
+	cin >> reg.id_detalle;
+	cout << endl << "Ingrese el modelo tractor: ";
+	cin >> reg.modelo_tractor;
+	cout << endl << "Ingrese revision: ";
+	cin >> reg.revision;
+	cout << endl << "Ingresar una operacion: ";
+	cin >> reg.operacion;
+	cout << endl << "Ingresar detalle: ";
+	cin >> reg.detalle;
+	cout << endl << "Ingresar hora: ";
+	cin >> reg.hora;
+	ptr = fopen("Detalle_revision.dat","ab");
+	fwrite(&reg, sizeof(reg), 1, ptr);
+	fclose(ptr);
+}
+void mostrarusuario(){
+	usuario reg;
+	FILE *ptr;
+	ptr = fopen("Usuarios.dat","rb");
+	if(ptr != NULL){
+		fread(&reg, sizeof(reg), 1, ptr);
+		cout << endl << "-----------------------------------------------------------------------------";
+		cout << endl << "---------------------------- LISTADO DE CLIENTES ----------------------------";
+		cout << endl << "-----------------------------------------------------------------------------";
+		cout << endl << "Id usuario" << setw(16) << "Nombre" << setw(12) << "contraseña" << setw(18) << "C/E";
+		cout << endl << "-----------------------------------------------------------------------------";
+		while(!feof(ptr)){
+			if(reg.estado == "N"){
+				cout << endl << setw(5) << reg.idusuario << setw(20) << reg.nombre<< setw(12) << reg.contrasena<< setw(25) << reg.ce;
+			}
+			fread(&reg, sizeof(reg), 1, ptr);
+		}
+		cout << endl << "-----------------------------------------------------------------------------";
+	}else{
+		cout << "No existe el Archivo";
+	}
+	fclose(ptr);
+}
+void mostrarcliente_tractor(){
+	cliente_tractor reg;
+	FILE *ptr;
+	ptr = fopen("Cliente_tractor.dat","rb");
+	if(ptr != NULL){
+		fread(&reg, sizeof(reg), 1, ptr);
+		cout << endl << "-----------------------------------------------------------------------------";
+		cout << endl << "--------------------------- LISTADO DE CLIENTE_Tractor ----------------------";
+		cout << endl << "-----------------------------------------------------------------------------";
+		cout << endl << "Id usuario" << setw(16) << "Id Tractor" << setw(12) << "Modelo_tractor";
+		cout << endl << "-----------------------------------------------------------------------------";
+		while(!feof(ptr)){
+			if(reg.estado == "N"){
+				cout << endl << setw(5) << reg.idusuario << setw(20) << reg.id_tractor<< setw(12) << reg.modelo_tractor;
+			}
+			fread(&reg, sizeof(reg), 1, ptr);
+		}
+		cout << endl << "-----------------------------------------------------------------------------";
+	}else{
+		cout << "No existe el Archivo";
+	}
+	fclose(ptr);
+}
+void mostrarencargado_tractor(){
+	encargado_tractor reg;
+	FILE *ptr;
+	ptr = fopen("Encargado_tractor.dat","rb");
+	if(ptr != NULL){
+		fread(&reg, sizeof(reg), 1, ptr);
+		cout << endl << "-----------------------------------------------------------------------------";
+		cout << endl << "--------------------------- LISTADO DE encargado_tractor ----------------------";
+		cout << endl << "-----------------------------------------------------------------------------";
+		cout << endl << "Id usuario" << setw(16) << "Marca" << setw(12) << "Modelo_tractor"<< setw(12) << "Num_rev";
+		cout << endl << "-----------------------------------------------------------------------------";
+		while(!feof(ptr)){
+			if(reg.estado == "N"){
+				cout << endl << setw(5) << reg.idusuario << setw(20) << reg.marca<< setw(12) << reg.modelo_tractor<< setw(12) << reg.num_rev;
+			}
+			fread(&reg, sizeof(reg), 1, ptr);
+		}
+		cout << endl << "-----------------------------------------------------------------------------";
+	}else{
+		cout << "No existe el Archivo";
+	}
+	fclose(ptr);
+}
+void mostrardetalle_revision(){
+	detalle_revision reg;
+	FILE *ptr;
+	ptr = fopen("Detalle_revision.dat","rb");
+	if(ptr != NULL){
+		fread(&reg, sizeof(reg), 1, ptr);
+		cout << endl << "-----------------------------------------------------------------------------";
+		cout << endl << "--------------------------- LISTADO DE detalle_revision ----------------------";
+		cout << endl << "-----------------------------------------------------------------------------";
+		cout << endl << "Id detalle" << setw(16) << "Modelo_tractor" << setw(12) << "revision" << setw(12) << "Operacion"<< setw(12) << "Detalle"<< setw(12) << "Hora";
+		cout << endl << "-----------------------------------------------------------------------------";
+		while(!feof(ptr)){
+			cout << endl << setw(5) << reg.id_detalle << setw(20) << reg.modelo_tractor << setw(12) << reg.revision << setw(12) << reg.operacion << setw(12) << reg.detalle << setw(12) << reg.hora;
+			fread(&reg, sizeof(reg), 1, ptr);
+		}
+		cout << endl << "-----------------------------------------------------------------------------";
+	}else{
+		cout << "No existe el Archivo";
+	}
+	fclose(ptr);
+}
