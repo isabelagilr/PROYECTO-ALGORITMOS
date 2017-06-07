@@ -88,6 +88,16 @@ struct detalle_revision
 	string detalle;
 	int hora;
 };
+struct rev_revisado
+{
+	int idrevrevisado;
+	int hrs_trabajadas;
+	int revision;
+	int operacion;
+	string detalle;
+	int hrs_faltantes;
+	int estado;
+};
 
 //MAIN PRINCIPAL
 void main()
